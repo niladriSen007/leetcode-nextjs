@@ -1,4 +1,4 @@
-export interface OnBoardUserResponse<T> {
+export interface Response<T> {
   data: T | null;
   success: boolean;
   message: string;
