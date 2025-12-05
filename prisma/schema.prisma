@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client"
   output   = "./generated/prisma"
@@ -14,7 +8,7 @@ datasource db {
 }
 
 model User {
-  id        Int     @id @default(autoincrement())
+  id        String  @id @default(uuid())
   email     String  @unique
   clerkId   String  @unique
   role      Role    @default(USER)
@@ -22,11 +16,45 @@ model User {
   lastName  String?
   imageUrl  String?
 
+  problems Problem[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([id, email])
+}
+
+model Problem {
+  id          String     @id @default(uuid())
+  title       String     @unique
+  description String
+  difficulty  Difficulty
+  tags        String[]
+  creatorId   String
+  examples    Json // Language-specific examples stored as JSON
+  constraints String
+  hints       String?
+  editorial   String?
+
+  testCases          Json
+  codeSnippets       Json
+  referenceSolutions Json
+
+  user User @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([difficulty])
 }
 
 enum Role {
   ADMIN
   USER
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
 }

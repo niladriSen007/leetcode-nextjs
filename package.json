@@ -8,7 +8,10 @@
     "start": "next start",
     "lint": "eslint",
     "up": " docker compose up -d",
-    "down": "docker compose down"
+    "down": "docker compose down",
+    "migrate:dev": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "generate": "prisma generate"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.35.6",
